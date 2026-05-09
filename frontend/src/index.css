@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;600&family=JetBrains+Mono&family=Playfair+Display:ital,wght@0,400;0,900;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Anton", sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-ink: #0F0F0F;
+  --color-paper: #E5E5E5;
+  --color-accent: #80ADA0;
+}
+
+@layer base {
+  body {
+    @apply bg-ink text-paper font-sans selection:bg-accent selection:text-white;
+  }
+}
+
+.gsap-reveal {
+  opacity: 0;
+}
