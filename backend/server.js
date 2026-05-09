@@ -32,7 +32,7 @@ app.post("/api/upload", upload.single("image"), (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("API is running...");
+  res.send("API is running1...");
 });
 
 app.listen(PORT, () => {
