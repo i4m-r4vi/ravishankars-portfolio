@@ -12,10 +12,52 @@
   --color-accent: #80ADA0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 @layer base {
   body {
     @apply bg-ink text-paper font-sans selection:bg-accent selection:text-white;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
+
+  section {
+    scroll-margin-top: 6rem; /* Matches navbar height (h-24) */
+  }
+  
+  body::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Custom Technical Scrollbar for containers */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #80ADA033; /* accent at 20% opacity */
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #80ADA066; /* accent at 40% opacity */
+  }
+}
+
+/* Helper to hide scrollbars on specific elements */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .gsap-reveal {

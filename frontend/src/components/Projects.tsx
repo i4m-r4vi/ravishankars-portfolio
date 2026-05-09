@@ -1,8 +1,29 @@
 import { motion } from "motion/react";
-import { PROJECTS } from "../constants";
+import { useState, useEffect } from "react";
 import { ExternalLink, Github } from "lucide-react";
+import api from "../services/api";
+import { DEFAULT_PROJECTS } from "../defaults";
 
 export default function Projects() {
+  const [projects, setProjects] = useState<any[]>(DEFAULT_PROJECTS);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await api.get("/projects");
+        if (res.data.data && res.data.data.length > 0) {
+          setProjects(res.data.data);
+        }
+      } catch (err) {
+        console.error("Using default projects due to API error");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <section id="projects" className="py-32 bg-ink text-paper border-b border-white/10">
       <div className="max-w-7xl mx-auto px-12">
@@ -15,9 +36,9 @@ export default function Projects() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/10 border border-white/10">
-          {PROJECTS.map((project, idx) => (
-            <motion.div 
-              key={project.id}
+          {projects?.map((project, idx) => (
+            <motion.div
+              key={project._id}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -25,14 +46,14 @@ export default function Projects() {
             >
               <div className="relative aspect-[16/10] overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10 pointer-events-none" />
-                <img 
-                  src={project.image} 
+                <img
+                  src={project.imageUrl || "https://placehold.co/600x400?text=Project"}
                   alt={project.title}
                   className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105"
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute top-6 left-6 z-20">
-                   <span className="text-[10px] font-bold uppercase tracking-widest text-accent bg-black/40 backdrop-blur-md px-3 py-1 border border-white/10">
+                   <span className="text-[10px] font-bold uppercase tracking-widest text-accent bg-black/40 backdrop-blur-md px-3 py-1 border border-white/10">      
                      0{idx + 1}
                    </span>
                 </div>
@@ -43,9 +64,9 @@ export default function Projects() {
                    <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter italic leading-none">{project.title}</h3>
                    <p className="text-paper/40 text-xs md:text-sm leading-relaxed max-w-sm mt-2">{project.description}</p>
                 </div>
-                
+
                 <div className="flex flex-wrap gap-2">
-                  {project.tags.map(tag => (
+                  {project.technologies?.map((tag: string) => (
                     <span key={tag} className="px-2 py-1 border border-white/10 text-[9px] uppercase tracking-widest font-bold text-paper/30">
                       {tag}
                     </span>
@@ -53,12 +74,16 @@ export default function Projects() {
                 </div>
 
                 <div className="mt-auto flex gap-6 pt-6 border-t border-white/5">
-                   <a href="#" className="flex items-center gap-2 text-[10px] uppercase font-bold tracking-widest hover:text-accent transition-colors">
-                     Case Study <ExternalLink size={12} />
-                   </a>
-                   <a href="#" className="flex items-center gap-2 text-[10px] uppercase font-bold tracking-widest hover:text-accent transition-colors">
-                     Github <Github size={12} />
-                   </a>
+                   {project.liveUrl && (
+                     <a href={project.liveUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-[10px] uppercase font-bold tracking-widest hover:text-accent transition-colors">
+                       Live Link <ExternalLink size={12} />
+                     </a>
+                   )}
+                   {project.githubUrl && (
+                     <a href={project.githubUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-[10px] uppercase font-bold tracking-widest hover:text-accent transition-colors">
+                       Github <Github size={12} />
+                     </a>
+                   )}
                 </div>
               </div>
             </motion.div>

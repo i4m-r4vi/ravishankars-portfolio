@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import { Send, CheckCircle2, ArrowUpRight } from "lucide-react";
+import api from "../services/api";
 
 export default function Contact() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -14,16 +14,10 @@ export default function Contact() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      const result = await res.json();
-      if (result.success) {
+      const res = await api.post("/contact", data);
+      if (res.data.success) {
         setStatus("success");
-        setMessage(result.message);
+        setMessage(res.data.message);
       } else {
         setStatus("error");
       }
@@ -65,46 +59,46 @@ export default function Contact() {
           <div className="bg-[#121212] p-12 border border-white/10 flex flex-col justify-between min-h-[500px]">
              <div>
                 <h4 className="text-[10px] uppercase tracking-widest text-paper/30 font-bold mb-10">Send a Brief</h4>
-                <form 
+                <form
                   onSubmit={handleSubmit}
                   className="flex flex-col gap-10"
                 >
                   <div className="flex flex-col gap-2 relative">
-                    <input 
-                      type="text" 
-                      id="name" 
-                      name="name" 
-                      required 
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      required
                       autoComplete="off"
                       className="bg-transparent border-b border-white/10 py-4 text-xs uppercase tracking-[0.2em] font-bold outline-none focus:border-accent transition-colors placeholder:text-paper/10"
                       placeholder="NAME"
                     />
                   </div>
-                  
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    required 
+
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
                     className="bg-transparent border-b border-white/10 py-4 text-xs uppercase tracking-[0.2em] font-bold outline-none focus:border-accent transition-colors placeholder:text-paper/10"
                     placeholder="EMAIL ADDRESS"
                   />
 
-                  <textarea 
-                    id="message" 
-                    name="message" 
-                    required 
+                  <textarea
+                    id="message"
+                    name="message"
+                    required
                     rows={4}
                     className="bg-transparent border-b border-white/10 py-4 text-xs uppercase tracking-[0.2em] font-bold outline-none focus:border-accent transition-colors resize-none placeholder:text-paper/10"
                     placeholder="MESSAGE / CONCEPT"
                   />
 
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     disabled={status === "sending" || status === "success"}
                     className={`group mt-6 p-6 border flex items-center justify-between transition-all ${
-                      status === "success" 
-                        ? "bg-green-600 border-green-600 text-white" 
+                      status === "success"
+                        ? "bg-green-600 border-green-600 text-white"
                         : "border-accent text-accent hover:bg-accent hover:text-white"
                     }`}
                   >
@@ -118,9 +112,9 @@ export default function Contact() {
                   </button>
                 </form>
              </div>
-             
+
              {status === "success" && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="mt-8 p-4 bg-accent/10 border border-accent/20 text-accent text-[10px] uppercase font-bold tracking-widest text-center"
