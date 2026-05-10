@@ -11,10 +11,12 @@ import adminRoutes from "./routes/adminRoutes.js";
 
 dotenv.config();
 
-// We might not want to connect to DB during every unit test import, 
-// but for integration tests it's okay. 
-// For real testing we'd use a separate test DB.
-connectDB();
+// Connect to Database
+if (process.env.SKIP_DB !== "true") {
+  connectDB();
+} else {
+  console.log("Database connection skipped (SKIP_DB=true)");
+}
 
 const app = express();
 
@@ -26,7 +28,7 @@ app.use("/api", publicRoutes);
 app.use("/api/admin", adminRoutes);
 
 app.get("/", (req, res) => {
-  res.send("API is running1...");
+  res.send("API is running...");
 });
 
 app.use(errorHandler);

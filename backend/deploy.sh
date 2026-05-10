@@ -22,8 +22,8 @@ echo "Installing dependencies..."
 npm install --legacy-peer-deps
 
 # 3. Start temporary instance on alternate port (TEST_PORT)
-echo "Starting temporary test instance on port $TEST_PORT..."
-PORT=$TEST_PORT pm2 start server.js --name "$PM2_TEST_NAME"
+echo "Starting temporary test instance on port $TEST_PORT (DB connection skipped)..."
+SKIP_DB=true PORT=$TEST_PORT pm2 start server.js --name "$PM2_TEST_NAME"
 
 # 4. Health Check on alternate port
 echo "Waiting for test instance to start (10 seconds)..."
