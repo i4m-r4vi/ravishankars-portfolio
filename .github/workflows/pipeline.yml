@@ -1,0 +1,69 @@
+name: Portfolio CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  # --- Phase 1: Build Verification & Testing ---
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+            admin/package-lock.json
+
+      # Verify Backend
+      - name: Backend - Install & Test
+        run: |
+          cd backend
+          npm install --legacy-peer-deps
+          npm run test
+
+      # Verify Frontend
+      - name: Frontend - Install, Lint & Build
+        run: |
+          cd frontend
+          npm install
+          npm run lint || echo "Linting failed, continuing..."
+          npm run build
+
+      # Verify Admin
+      - name: Admin - Install, Lint & Build
+        run: |
+          cd admin
+          npm install
+          npm run lint || echo "Linting failed, continuing..."
+          npm run build
+
+  # --- Phase 2: Deployment (Only on main branch) ---
+  deploy:
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy Backend to VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ravi
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: 22
+          script: |
+            cd /home/ravi/ravishankars-portfolio/backend
+            git pull origin main
+            npm install --legacy-peer-deps
+            pm2 restart portfolio-api || pm2 start server.js --name portfolio-api
+            pm2 save
+
