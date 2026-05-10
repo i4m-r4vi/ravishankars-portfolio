@@ -26,7 +26,7 @@ app.use("/api", publicRoutes);
 app.use("/api/admin", adminRoutes);
 
 app.get("/", (req, res) => {
-  res.send("API is running...");
+  res.send("API is running1...");
 });
 
 app.use(errorHandler);
