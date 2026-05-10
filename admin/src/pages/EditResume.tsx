@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import api from "../services/api";
 import toast from "react-hot-toast";
+import { Resume } from "../types";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,10 +10,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Plus, Trash2, Save, FileText, UploadCloud, Briefcase, GraduationCap } from "lucide-react";
 
 const EditResume = () => {
-    const [resume, setResume] = useState({
+    const [resume, setResume] = useState<Resume>({
         resumeUrl: "",
-        experiences: [] as { year: string, role: string, company: string, desc: string }[],
-        courses: [] as { year: string, title: string, platform: string, certificateUrl: string }[]
+        experiences: [],
+        courses: []
     });
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
@@ -72,7 +73,7 @@ const EditResume = () => {
     const addCourse = () => {
         setResume({
             ...resume,
-            courses: [...(resume.courses || []), { year: "2024", title: "Course Title", platform: "Platform", certificateUrl: "" }]
+            courses: [...(resume.courses || []), { year: "2024", title: "Course Title", platform: "Platform", desc: "", certificateUrl: "" }]
         });
     };
 
