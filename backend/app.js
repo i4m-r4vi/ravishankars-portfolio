@@ -15,7 +15,7 @@ dotenv.config();
 if (process.env.SKIP_DB !== "true") {
   connectDB();
 } else {
-  console.log("Database connection skipped (SKIP_DB=true)");
+  console.log("Database connection skipped (SKIP_DB=true)1");
 }
 
 const app = express();
