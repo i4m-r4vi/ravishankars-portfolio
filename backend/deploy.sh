@@ -30,12 +30,16 @@ echo "Waiting for test instance to start (10 seconds)..."
 sleep 10
 
 echo "Performing health check on http://localhost:$TEST_PORT..."
+HEALTH_RESPONSE=$(curl -s "http://localhost:$TEST_PORT/")
+echo "Server response: $HEALTH_RESPONSE"
+
 HEALTH_CHECK_PASSED=false
-if curl -s -f "http://localhost:$TEST_PORT/" > /dev/null; then
+if [ "$HEALTH_RESPONSE" = "API is running..." ]; then
     echo "SUCCESS: Test instance is healthy on port $TEST_PORT."
     HEALTH_CHECK_PASSED=true
 else
     echo "ERROR: Test instance failed health check on port $TEST_PORT."
+    echo "Expected 'API is running...', but got '$HEALTH_RESPONSE'"
 fi
 
 # 5. Turn off the test instance (as requested)
