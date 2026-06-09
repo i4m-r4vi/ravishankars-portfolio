@@ -62,7 +62,7 @@ export default function App() {
         <motion.div 
           key="loader"
           exit={{ opacity: 0, scale: 1.1 }}
-          className="fixed inset-0 z-[100] bg-ink flex flex-col items-center justify-center p-12 font-mono"
+          className="fixed inset-0 z-[100] bg-ink flex flex-col items-center justify-center p-6 md:p-12 font-mono"
         >
           {/* ... existing splash screen content ... */}
           <div className="absolute inset-0 opacity-10 pointer-events-none overflow-hidden">
@@ -98,14 +98,14 @@ export default function App() {
                     initial={{ y: "100%" }}
                     animate={{ y: 0 }}
                     transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-                    className="text-[12vw] lg:text-[8vw] font-black text-paper uppercase leading-none tracking-tighter"
+                    className="text-[clamp(2.5rem,10vw,6rem)] lg:text-[8vw] font-black text-paper uppercase leading-none tracking-tighter"
                   >
                     RAVISHANKAR
                   </motion.h2>
                 </div>
              </div>
              
-             <div className="flex flex-col items-center gap-4 w-80">
+             <div className="flex flex-col items-center gap-4 w-64 sm:w-80">
                 <div className="w-full h-[2px] bg-white/5 relative overflow-hidden">
                     <motion.div 
                       initial={{ x: "-100%" }}

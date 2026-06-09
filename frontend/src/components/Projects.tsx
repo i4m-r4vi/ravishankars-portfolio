@@ -26,7 +26,7 @@ export default function Projects() {
 
   return (
     <section id="projects" className="py-32 bg-ink text-paper border-b border-white/10">
-      <div className="max-w-7xl mx-auto px-12">
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="flex flex-col gap-4 mb-32">
           <span className="text-accent font-bold uppercase tracking-[0.4em] text-[10px]">Work / Projects</span>
           <h2 className="text-5xl sm:text-7xl md:text-8xl font-black uppercase tracking-tighter leading-none italic">

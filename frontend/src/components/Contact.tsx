@@ -1,40 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion } from "motion/react";
-import api from "../services/api";
+import emailjs from "@emailjs/browser";
 
 export default function Contact() {
+  const formRef = useRef<HTMLFormElement>(null);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!formRef.current) return;
+    
     setStatus("sending");
 
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-
     try {
-      const res = await api.post("/contact", data);
-      if (res.data.success) {
-        setStatus("success");
-        setMessage(res.data.message);
-      } else {
-        setStatus("error");
+      // Note: These should ideally be stored in environment variables
+      // VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || "YOUR_SERVICE_ID";
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "YOUR_TEMPLATE_ID";
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "YOUR_PUBLIC_KEY";
+
+      if (serviceId === "YOUR_SERVICE_ID") {
+        throw new Error("EmailJS is not configured. Please set your credentials.");
       }
+
+      await emailjs.sendForm(
+        serviceId,
+        templateId,
+        formRef.current,
+        publicKey
+      );
+
+      setStatus("success");
+      setMessage("Message sent successfully! I'll get back to you soon.");
+      formRef.current.reset();
     } catch (err) {
-      console.error(err);
+      console.error("EmailJS Error:", err);
       setStatus("error");
+      setMessage(err instanceof Error ? err.message : "Failed to send message. Please try again.");
     }
   };
 
   return (
     <section id="contact" className="py-32 bg-ink text-paper selection:bg-accent selection:text-white border-b border-white/10">
-      <div className="max-w-7xl mx-auto px-12">
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
           <div className="flex flex-col justify-between py-4">
             <div>
               <span className="text-accent font-bold uppercase tracking-[0.4em] text-[10px]">Inquiries / Collaboration</span>
-              <h2 className="text-[12vw] lg:text-9xl font-black uppercase tracking-tighter leading-[0.85] mt-8 italic">
+              <h2 className="text-[clamp(3.5rem,12vw,6rem)] lg:text-9xl font-black uppercase tracking-tighter leading-[0.85] mt-8 italic">
                 Get In <br />
                 Touch<span className="text-accent">.</span>
               </h2>
@@ -60,6 +74,7 @@ export default function Contact() {
              <div>
                 <h4 className="text-[10px] uppercase tracking-widest text-paper/30 font-bold mb-10">Send a Brief</h4>
                 <form
+                  ref={formRef}
                   onSubmit={handleSubmit}
                   className="flex flex-col gap-10"
                 >
@@ -113,11 +128,15 @@ export default function Contact() {
                 </form>
              </div>
 
-             {status === "success" && (
+             {(status === "success" || status === "error") && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="mt-8 p-4 bg-accent/10 border border-accent/20 text-accent text-[10px] uppercase font-bold tracking-widest text-center"
+                  className={`mt-8 p-4 border text-[10px] uppercase font-bold tracking-widest text-center ${
+                    status === "success" 
+                      ? "bg-accent/10 border-accent/20 text-accent" 
+                      : "bg-red-500/10 border-red-500/20 text-red-500"
+                  }`}
                 >
                   {message}
                 </motion.div>

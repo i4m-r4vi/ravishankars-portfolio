@@ -69,7 +69,7 @@ export default function Resume() {
       ref={sectionRef}
       className="bg-[#121212] text-paper overflow-hidden h-screen flex flex-col border-b border-white/10 relative"
     >
-      <div className="max-w-7xl mx-auto px-12 pt-16 md:pt-24 mb-4 w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-6 shrink-0 z-20">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-16 md:pt-24 mb-4 w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-6 shrink-0 z-20">
         <div className="flex flex-col gap-2">
           <span className="font-bold uppercase tracking-[0.4em] text-[10px] text-accent">Career Path / Experience</span>
           <h2 className="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tighter leading-none italic">The Archive</h2>
@@ -88,7 +88,7 @@ export default function Resume() {
       <div className="flex-1 relative flex items-center overflow-visible">
         <div
           ref={scrollContainerRef}
-          className="flex flex-nowrap items-center gap-12 md:gap-24 px-12 md:px-32 w-max relative h-[100%]"
+          className="flex flex-nowrap items-center gap-12 md:gap-24 px-6 md:px-32 w-max relative h-[100%]"
         >
           {data.experiences?.map((exp: any, idx: number) => (
             <div
@@ -166,7 +166,7 @@ export default function Resume() {
         </div>
       </div>
 
-      <div className="absolute bottom-20 md:bottom-12 left-12 right-12 h-px bg-white/10 overflow-hidden">
+      <div className="absolute bottom-8 md:bottom-12 left-6 md:left-12 right-6 md:right-12 h-px bg-white/10 overflow-hidden">
         <div
           className="h-full bg-accent w-full origin-left scale-x-0"
           id="progress-bar"

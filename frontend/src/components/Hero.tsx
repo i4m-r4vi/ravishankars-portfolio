@@ -35,27 +35,27 @@ export default function Hero() {
   useGSAP(() => {
     if (loading) return;
     // Parallax effect
-    gsap.to(textRef.current, {
-      yPercent: -50,
-      ease: "none",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-      },
-    });
+    // gsap.to(textRef.current, {
+    //   yPercent: 10,
+    //   ease: "none",
+    //   scrollTrigger: {
+    //     trigger: containerRef.current,
+    //     start: "top top",
+    //     end: "bottom top",
+    //     scrub: true,
+    //   },
+    // });
 
-    gsap.to(imageRef.current, {
-      yPercent: 30,
-      ease: "none",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-      },
-    });
+    // gsap.to(imageRef.current, {
+    //   yPercent: 10,
+    //   ease: "none",
+    //   scrollTrigger: {
+    //     trigger: containerRef.current,
+    //     start: "top top",
+    //     end: "bottom top",
+    //     scrub: true,
+    //   },
+    // });
   }, { scope: containerRef, dependencies: [loading] });
 
   const year = new Date().getFullYear();
@@ -66,7 +66,7 @@ export default function Hero() {
       className="relative min-h-screen grid grid-cols-12 overflow-hidden border-b border-white/10"
     >
       {/* Left Section: Large Hero Text */}
-      <div className="col-span-12 lg:col-span-7 p-6 md:p-12 lg:p-16 flex flex-col justify-between border-r border-white/10 pt-24 md:pt-32 lg:pt-40 pb-12">
+      <div className="col-span-12 lg:col-span-7 p-4 sm:p-6 md:p-12 lg:p-16 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/10 pt-32 md:pt-32 lg:pt-40 pb-8">
         <div>
           <motion.p
             initial={{ opacity: 0 }}
@@ -77,18 +77,20 @@ export default function Hero() {
           </motion.p>
           <h1
             ref={textRef}
-            className="text-[16vw] md:text-[14vw] lg:text-[110px] xl:text-[130px] leading-[0.82] font-black tracking-tighter text-paper uppercase"
+            className="text-[clamp(3.5rem,15vw,6rem)] md:text-[clamp(5rem,12vw,8rem)] lg:text-[110px] xl:text-[130px] leading-[0.82] font-black tracking-tighter text-paper uppercase flex flex-col"
           >
-            {data.heading.split(' ').map((word: string, i: number) => (
-              <span key={i}>{word}<br/></span>
+            {data.heading.split(' ').map((word: string, i: number, arr: string[]) => (
+              <span key={i} className={i === arr.length - 1 ? "flex justify-between items-baseline" : ""}>
+                {word}
+                {i === arr.length - 1 && <span className="text-accent">.</span>}
+              </span>
             ))}
-            <span className="text-accent">.</span>
           </h1>
         </div>
 
-        <div className="flex flex-col md:flex-row items-start md:items-end gap-12 mt-16 md:mt-20">
+        <div className="flex flex-col md:flex-row items-start md:items-end gap-12 mt-4 md:mt-20">
           <div className="max-w-xs">
-            <p className="text-sm text-paper/40 leading-relaxed font-sans mb-2">
+            <p className="text-sm text-paper/40 leading-relaxed font-sans">
               {data.subheading}
             </p>
           </div>
@@ -104,7 +106,7 @@ export default function Hero() {
       </div>
 
       {/* Right Section: Image & Tech Visual */}
-      <div className="col-span-12 lg:col-span-5 flex flex-col pt-12 lg:pt-0">
+      <div className="col-span-12 lg:col-span-5 flex flex-col pt-8 lg:pt-0">
         <div
           ref={imageRef}
           className="flex-1 bg-ink relative group overflow-hidden flex items-center justify-center p-6 md:p-12 mb-0"
@@ -118,7 +120,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="relative aspect-[3/4] w-full max-w-sm overflow-hidden bg-ink border border-white/10 shadow-2xl transition-transform duration-700 group-hover:scale-[1.02]">
+          <div className="relative aspect-[5.5/6] w-full max-w-sm overflow-hidden bg-ink border border-white/10 shadow-2xl transition-transform duration-700 group-hover:scale-[1.02]">
              {/* Security/DevOps Concept Image */}
              <img
                src={"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800&h=1200"}
