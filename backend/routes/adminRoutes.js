@@ -9,11 +9,12 @@ import {
     updateContact,
     updateFooter,
     updateNavbar,
-    updateResume
+    updateResume,
+    uploadImage,
+    uploadResume
 } from "../controllers/adminController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import { upload } from "../config/cloudinary.js";
-import { successResponse, errorResponse } from "../utils/response.js";
 
 const router = express.Router();
 
@@ -30,14 +31,7 @@ router.put("/footer", updateFooter);
 router.put("/navbar", updateNavbar);
 router.put("/resume", updateResume);
 
-router.post("/upload/image", upload.single("image"), (req, res) => {
-    if (!req.file) return errorResponse(res, 400, "No image uploaded");
-    return successResponse(res, 200, { imageUrl: req.file.path }, "Image uploaded");
-});
-
-router.post("/upload/resume", upload.single("resume"), (req, res) => {
-    if (!req.file) return errorResponse(res, 400, "No resume uploaded");
-    return successResponse(res, 200, { resumeUrl: req.file.path }, "Resume uploaded");
-});
+router.post("/upload/image", upload.single("image"), uploadImage);
+router.post("/upload/resume", upload.single("resume"), uploadResume);
 
 export default router;

@@ -62,6 +62,7 @@ export default function Hero() {
 
   return (
     <section
+      id="hero"
       ref={containerRef}
       className="relative min-h-screen grid grid-cols-12 overflow-hidden border-b border-white/10"
     >

@@ -38,6 +38,22 @@ export default function CardNav({
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      const targetId = href.replace("#", "");
+      const elem = document.getElementById(targetId);
+      setIsMenuOpen(false);
+      
+      if (elem) {
+        elem.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -61,7 +77,7 @@ export default function CardNav({
         } flex items-center justify-between`}
       >
         {/* Logo */}
-        <a href="#" className="flex items-center gap-3 group">
+        <a href="#hero" onClick={(e) => handleNavClick(e, "#hero")} className="flex items-center gap-3 group">
           {logo ? (
             <img src={logo} alt={logoAlt} className="h-8 w-auto" />
           ) : (
@@ -105,6 +121,7 @@ export default function CardNav({
                           <a 
                             key={link.label}
                             href={link.href || "#"}
+                            onClick={(e) => handleNavClick(e, link.href || "#")}
                             aria-label={link.ariaLabel}
                             className="text-[11px] font-bold uppercase tracking-widest flex items-center justify-between group/link"
                           >
@@ -121,6 +138,7 @@ export default function CardNav({
           </div>
 
           <button 
+            onClick={(e: any) => handleNavClick(e, "#contact")}
             className="ml-6 px-6 py-2.5 rounded-full text-[9px] font-black uppercase tracking-[0.3em] transition-transform hover:scale-105 active:scale-95"
             style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
           >
@@ -144,10 +162,16 @@ export default function CardNav({
             initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
-            className="fixed inset-0 z-[70] bg-ink/95 backdrop-blur-2xl flex flex-col p-12 md:hidden"
+            className="fixed inset-0 z-[70] bg-ink/95 backdrop-blur-2xl flex flex-col p-12 md:hidden overflow-y-auto"
           >
             <div className="flex justify-between items-center mb-20">
-              <span className="text-xs font-black tracking-widest">RAVISHANKAR</span>
+              <a 
+                href="#hero" 
+                onClick={(e) => handleNavClick(e, "#hero")}
+                className="text-xs font-black tracking-widest hover:text-accent transition-colors"
+              >
+                RAVISHANKAR
+              </a>
               <button 
                 onClick={() => setIsMenuOpen(false)}
                 className="p-4 rounded-full border border-white/10 text-accent"
@@ -165,8 +189,8 @@ export default function CardNav({
                     {item.links.map(link => (
                       <a 
                         key={link.label}
-                        href="#"
-                        onClick={() => setIsMenuOpen(false)}
+                        href={link.href || "#"}
+                        onClick={(e) => handleNavClick(e, link.href || "#")}
                         className="text-lg font-serif italic text-white/60 hover:text-accent"
                       >
                         {link.label}
@@ -177,11 +201,11 @@ export default function CardNav({
               ))}
             </div>
 
-            <div className="mt-auto pt-12 border-t border-white/10 flex justify-between items-center">
+            <div className="mt-auto pt-12 pb-20 border-t border-white/10 flex justify-between items-center">
               <span className="text-[10px] uppercase font-bold tracking-widest text-white/30">Available Oct 2026</span>
               <button 
                  className="p-5 rounded-full bg-accent text-white"
-                 onClick={() => setIsMenuOpen(false)}
+                 onClick={(e: any) => handleNavClick(e, "#contact")}
               >
                 <ArrowRight size={24} />
               </button>

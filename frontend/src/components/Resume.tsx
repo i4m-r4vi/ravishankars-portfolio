@@ -66,6 +66,7 @@ export default function Resume() {
 
   return (
     <section
+      id="resume"
       ref={sectionRef}
       className="bg-[#121212] text-paper overflow-hidden h-screen flex flex-col border-b border-white/10 relative"
     >

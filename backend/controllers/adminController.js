@@ -80,3 +80,13 @@ export const updateResume = async (req, res) => {
     } catch (error) { return errorResponse(res, 500, error.message); }
 };
 
+export const uploadImage = async (req, res) => {
+    if (!req.file) return errorResponse(res, 400, "No image uploaded");
+    return successResponse(res, 200, { imageUrl: req.file.path }, "Image uploaded");
+};
+
+export const uploadResume = async (req, res) => {
+    if (!req.file) return errorResponse(res, 400, "No resume uploaded");
+    return successResponse(res, 200, { resumeUrl: req.file.path }, "Resume uploaded");
+};
+

@@ -65,8 +65,8 @@ export const DEFAULT_NAVBAR = {
 export const DEFAULT_FOOTER = {
     text: "© 2026 Ravi Shankar. All rights reserved.",
     socialLinks: [
-        { platform: "GitHub", url: "https://github.com" },
-        { platform: "LinkedIn", url: "https://linkedin.com" }
+        { platform: "GitHub", url: "https://github.com/i4m-r4vi" },
+        { platform: "LinkedIn", url: "https://linkedin.com/in/i4m-r4vi" }
     ]
 };
 

@@ -22,7 +22,6 @@ export default function Footer() {
   return (
     <footer className="px-6 md:px-12 py-12 flex flex-col md:flex-row justify-between items-center bg-ink border-t border-white/10 text-[9px] text-paper/30 uppercase tracking-[0.3em] font-bold gap-8 md:gap-0">
       <div className="hidden md:flex gap-12 text-white/30">
-        <span>Available for Project JAN 2026</span>
         <span className="hidden md:inline">Based in Tamilnadu, Karnataka</span>
       </div>
 
